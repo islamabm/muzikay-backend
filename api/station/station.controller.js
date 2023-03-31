@@ -86,6 +86,7 @@ async function removeStationSong(req, res) {
     const { songId } = req.params
 
     const removedId = await stationService.removeStationSong(stationId, songId)
+    console.log('remove song from the back station service', removedId)
     res.send(removedId)
   } catch (err) {
     logger.error('Failed to remove station msg', err)
