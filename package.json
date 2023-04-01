@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
     "name": "server",
     "version": "1.0.0",
     "description": "production ready server",
@@ -24,4 +25,30 @@
     "devDependencies": {
         "nodemon": "^2.0.20"
     }
+=======
+  "name": "server",
+  "version": "1.0.0",
+  "description": "production ready server",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "server:dev": "nodemon server.js",
+    "server:prod": "set NODE_ENV=production&&node server.js",
+    "server:prod:mac": "export NODE_ENV=production&&node server.js"
+  },
+  "author": "Me",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.0",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "cryptr": "^6.0.3",
+    "express": "^4.17.1",
+    "mongodb": "^3.2.7",
+    "socket.io": "^4.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+>>>>>>> ec523584d36ae387cb4fb70bad04d841937d1399
 }
