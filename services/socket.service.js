@@ -1,4 +1,3 @@
-const stationService = require('../api/station/station.service')
 const logger = require('./logger.service')
 
 var gIo = null
@@ -14,7 +13,6 @@ function setupSocketAPI(http) {
     socket.on('disconnect', (socket) => {
       logger.info(`Socket disconnected [id: ${socket.id}]`)
     })
-
     socket.on('chat-set-topic', (topic) => {
       if (socket.myTopic === topic) return
       if (socket.myTopic) {
@@ -26,35 +24,46 @@ function setupSocketAPI(http) {
       socket.join(topic)
       socket.myTopic = topic
     })
-
     socket.on('chat-send-msg', (msg) => {
       logger.info(
         `New chat msg from socket [id: ${socket.id}], emitting to topic ${socket.myTopic}`
       )
-      broadcast({
-        type: 'chat-add-msg',
-        data: msg,
-        room: socket.myTopic,
-        userId: socket.userId,
-      })
-      stationService.addstationMsg(socket.myTopic, msg)
+      // emits to all sockets:
+      // gIo.emit('chat addMsg', msg)
+      // emits only to sockets in the same room
+      gIo.to(socket.myTopic).emit('chat-add-msg', msg)
     })
-
-    socket.on('chat-set-user-is-typing', (username) => {
-      socket.broadcast.to(socket.myTopic).emit('chat-user-is-typing', username)
+    socket.on('user-watch', (userId) => {
+      logger.info(
+        `user-watch from socket [id: ${socket.id}], on user ${userId}`
+      )
+      socket.join('watching:' + userId)
     })
-
-    // socket.on('shop-admin-changed')
     socket.on('set-user-socket', (userId) => {
       logger.info(
         `Setting socket.userId = ${userId} for socket [id: ${socket.id}]`
       )
       socket.userId = userId
     })
-
     socket.on('unset-user-socket', () => {
       logger.info(`Removing socket.userId for socket [id: ${socket.id}]`)
       delete socket.userId
+    })
+    // socket.on('update-station', (station) => {
+    //     logger.info(`updating station socket`, station)
+    //     socket.broadcast('update-station', station)
+    // })
+    socket.on('update-station', (data) => {
+      // logger.info('stationId', stationId)
+      // logger.info('song', song)
+      // logger.info('args', args)
+      // console.log('data', data)
+
+      socket.broadcast.emit('station-updated', data)
+    })
+
+    socket.on('station-added', (savedStation) => {
+      socket.broadcast.emit('station-created', savedStation)
     })
   })
 }
@@ -81,7 +90,7 @@ async function emitToUser({ type, data, userId }) {
 
 // If possible, send to all sockets BUT not the current socket
 // Optionally, broadcast to a room / to all
-async function broadcast({ type, data, room = null, userId = '' }) {
+async function broadcast({ type, data, room = null, userId }) {
   userId = userId.toString()
 
   logger.info(`Broadcasting event: ${type}`)
@@ -101,30 +110,15 @@ async function broadcast({ type, data, room = null, userId = '' }) {
   }
 }
 
-async function broadcastAdminUpdate({ productName, type, adminId }) {
-  return broadcast({
-    type: 'admin-update',
-    data: _getAdminMsg(productName, type),
-    userId: adminId,
-  })
-}
-
 async function _getUserSocket(userId) {
   const sockets = await _getAllSockets()
   const socket = sockets.find((s) => s.userId === userId)
   return socket
 }
-
 async function _getAllSockets() {
   // return all Socket instances
   const sockets = await gIo.fetchSockets()
   return sockets
-}
-
-function _getAdminMsg(productName, type) {
-  let suffix = 'go check it out!'
-  if (type === 'remove') suffix = 'it is no longer available.'
-  return `An admin has ${type}ed ${productName}, ${suffix}`
 }
 
 async function _printSockets() {
@@ -146,5 +140,4 @@ module.exports = {
   // Send to all sockets BUT not the current socket - if found
   // (otherwise broadcast to a room / to all)
   broadcast,
-  broadcastAdminUpdate,
 }
