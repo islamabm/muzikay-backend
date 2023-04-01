@@ -88,6 +88,7 @@ async function addStationSong(stationId, song) {
   }
 }
 
+//Step 6
 async function removeStationSong(stationId, songId) {
   try {
     const collection = await dbService.getCollection('station')

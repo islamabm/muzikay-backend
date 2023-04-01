@@ -29,6 +29,7 @@ router.delete('/:id', removeStation)
 // router.delete('/:id', requireAuth, requireAdmin, removeStation)
 
 router.post('/:id/song', addStationSong)
+//Step 4
 router.delete('/:id/song/:songId', removeStationSong)
 
 module.exports = router

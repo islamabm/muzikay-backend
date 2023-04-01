@@ -4,7 +4,7 @@ const BASE_URL =  '/api/'
 
 export const httpService = {
     get(endpoint, data) {
-        return ajax(endpoint, 'GET', data)
+  return ajax(endpoint, 'GET', data)
     },
     post(endpoint, data) {
         return ajax(endpoint, 'POST', data)
