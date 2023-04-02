@@ -28,9 +28,6 @@ function setupSocketAPI(http) {
       logger.info(
         `New chat msg from socket [id: ${socket.id}], emitting to topic ${socket.myTopic}`
       )
-      // emits to all sockets:
-      // gIo.emit('chat addMsg', msg)
-      // emits only to sockets in the same room
       gIo.to(socket.myTopic).emit('chat-add-msg', msg)
     })
     socket.on('user-watch', (userId) => {
@@ -49,16 +46,8 @@ function setupSocketAPI(http) {
       logger.info(`Removing socket.userId for socket [id: ${socket.id}]`)
       delete socket.userId
     })
-    // socket.on('update-station', (station) => {
-    //     logger.info(`updating station socket`, station)
-    //     socket.broadcast('update-station', station)
-    // })
-    socket.on('update-station', (data) => {
-      // logger.info('stationId', stationId)
-      // logger.info('song', song)
-      // logger.info('args', args)
-      // console.log('data', data)
 
+    socket.on('update-station', (data) => {
       socket.broadcast.emit('station-updated', data)
     })
 
@@ -84,12 +73,9 @@ async function emitToUser({ type, data, userId }) {
     socket.emit(type, data)
   } else {
     logger.info(`No active socket for user: ${userId}`)
-    // _printSockets()
   }
 }
 
-// If possible, send to all sockets BUT not the current socket
-// Optionally, broadcast to a room / to all
 async function broadcast({ type, data, room = null, userId }) {
   userId = userId.toString()
 
@@ -116,7 +102,6 @@ async function _getUserSocket(userId) {
   return socket
 }
 async function _getAllSockets() {
-  // return all Socket instances
   const sockets = await gIo.fetchSockets()
   return sockets
 }
