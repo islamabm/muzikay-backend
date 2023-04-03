@@ -54,6 +54,12 @@ function setupSocketAPI(http) {
     socket.on('station-added', (savedStation) => {
       socket.broadcast.emit('station-created', savedStation)
     })
+    socket.on('station-updated', (data) => {
+      console.log(data)
+      logger.info(`Station updated: ${JSON.stringify(data)}`)
+
+      socket.to(socket.myTopic).broadcast.emit('station-updated', data)
+    })
   })
 }
 
