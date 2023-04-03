@@ -75,7 +75,7 @@ async function update(station) {
 
 async function addStationSong(stationId, song) {
   try {
-    song.id = utilService.makeId()
+    // song.id = utilService.makeId()
     const collection = await dbService.getCollection('station')
     await collection.updateOne(
       { _id: new ObjectId(stationId) },
