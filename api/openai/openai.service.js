@@ -1,8 +1,9 @@
 const { Configuration, OpenAIApi } = require('openai')
+require('dotenv').config()
 const { getRandomSongsFromMoodTag } = require('../../services/db.service')
 const openAi = new OpenAIApi(
   new Configuration({
-    apiKey: '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',
+    apiKey: process.env.CHAT_GPT_AI,
   })
 )
 
