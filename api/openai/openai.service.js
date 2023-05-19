@@ -1,50 +1,55 @@
-// const openai = require('openai')
-
-// openai.apiKey = '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'
-
-// async function getSongsForMood(mood) {
-//   // Generate text using OpenAI
-//   const response = await openai.Completion.create({
-//     engine: 'text-davinci-002',
-//     prompt: `Generate 10 song suggestions for someone in a ${mood} mood`,
-//     max_tokens: 60,
-//   })
-
-//   // Extract song names from response
-//   const songNames = response.choices[0].text.split('\n')
-
-//   // Fetch songs from your MongoDB based on the song names
-//   // This will depend on how your MongoDB is set up
-//   const songs = await fetchSongsFromDB(songNames)
-//   console.log('songs', songs)
-//   return songs
-// }
 const { Configuration, OpenAIApi } = require('openai')
 const { getRandomSongsFromMoodTag } = require('../../services/db.service')
 const openAi = new OpenAIApi(
   new Configuration({
-    apiKey: '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',
+    apiKey: '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',
   })
 )
 
-async function askGpt(mood) {
-  const songsFromDb = await getRandomSongsFromMoodTag(mood, 10)
-  console.log('songsFromDb', songsFromDb)
-  return songsFromDb
+// async function askGptEmotion(text) {
+//   const response = await openAi.completions.create({
+//     engine: 'text-davinci-004',
+//     prompt: `Text: ${text}\n\nEmotion:`,
+//     temperature: 0.5,
+//     max_tokens: 60,
+//   })
+
+//   let detectedEmotion = response.choices[0].text.trim()
+//   console.log('detectedEmotion', detectedEmotion)
+//   return detectedEmotion
+// }
+async function askGptEmotion(text, tags) {
+  console.log('text in service openai', text)
+  let tagList = tags.join(', ')
+  const completion = await openAi.createChatCompletion({
+    model: 'gpt-3.5-turbo',
+    messages: [
+      {
+        role: 'system',
+        content: `Here are some tags: ${tagList}.`,
+      },
+      {
+        role: 'user',
+        content: `Given that I'm feeling like this: ${text}, which tag would you choose?`,
+      },
+    ],
+  })
+
+  let fullResponse = completion.data.choices[0].message.content.trim()
+  console.log('Full Response', fullResponse)
+
+  let chosenTag = fullResponse.match(/"([^"]+)"/)[1]
+  console.log('chosenTag', chosenTag)
+
+  return chosenTag
 }
-function parseSongs(text) {
-  // Split the text by newline
-  const lines = text.split('\n')
 
-  // Remove the first line (it's the prompt continuation)
-  lines.shift()
-
-  // Extract the song titles by removing the leading numbers and trimming the whitespace
-  const songs = lines.map((line) => line.replace(/^\d+\.\s*/, '').trim())
-  console.log('songs', songs)
-  return songs
+async function askGptSongs(emotion) {
+  const songsFromDb = await getRandomSongsFromMoodTag(emotion, 10)
+  return { songs: songsFromDb }
 }
 
 module.exports = {
-  askGpt,
+  askGptEmotion,
+  askGptSongs,
 }
