@@ -19,6 +19,7 @@ if (process.env.NODE_ENV === 'production') {
   }
   app.use(cors(corsOptions))
 }
+const openaiRoutes = require('./api/openai/openai.routes')
 
 const authRoutes = require('./api/auth/auth.routes')
 const userRoutes = require('./api/user/user.routes')
@@ -34,6 +35,7 @@ app.use('/api/auth', authRoutes)
 app.use('/api/user', userRoutes)
 app.use('/api/review', reviewRoutes)
 app.use('/api/station', stationRoutes)
+app.use('/api/openai', openaiRoutes)
 setupSocketAPI(http)
 
 // Make every server-side-route to match the index.html
