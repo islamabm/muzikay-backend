@@ -23,11 +23,9 @@ async function getCollection(collectionName) {
 async function getRandomSongsFromMoodTag(mood, songLimit) {
   try {
     const collection = await getCollection('station')
-    const playlists = await collection.find({}).toArray() // Fetch all playlists
-    console.log('All playlists:', playlists) // Log all playlists
+    const playlists = await collection.find({}).toArray()
 
-    const matchedPlaylists = await collection.find({ tags: mood }).toArray() // Fetch playlists that match the mood
-    console.log(`Playlists matching mood "${mood}":`, matchedPlaylists) // Log matched playlists
+    const matchedPlaylists = await collection.find({ tags: mood }).toArray()
 
     const songs = await collection
       .aggregate([
@@ -37,8 +35,6 @@ async function getRandomSongsFromMoodTag(mood, songLimit) {
         { $project: { _id: 0, song: '$songs' } },
       ])
       .toArray()
-
-    console.log(`Songs from playlists matching mood "${mood}":`, songs) // Log the songs
 
     return songs.map((playlist) => playlist.song)
   } catch (err) {

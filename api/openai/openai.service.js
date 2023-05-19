@@ -7,18 +7,6 @@ const openAi = new OpenAIApi(
   })
 )
 
-// async function askGptEmotion(text) {
-//   const response = await openAi.completions.create({
-//     engine: 'text-davinci-004',
-//     prompt: `Text: ${text}\n\nEmotion:`,
-//     temperature: 0.5,
-//     max_tokens: 60,
-//   })
-
-//   let detectedEmotion = response.choices[0].text.trim()
-//   console.log('detectedEmotion', detectedEmotion)
-//   return detectedEmotion
-// }
 async function askGptEmotion(text, tags) {
   console.log('text in service openai', text)
   let tagList = tags.join(', ')
