@@ -1,5 +1,6 @@
 const { Configuration, OpenAIApi } = require('openai')
 require('dotenv').config()
+
 const { getRandomSongsFromMoodTag } = require('../../services/db.service')
 const openAi = new OpenAIApi(
   new Configuration({
@@ -33,6 +34,29 @@ async function askGptEmotion(text, tags) {
   return chosenTag
 }
 
+async function askGptStationName(emotion) {
+  console.log('hi')
+  const prompt = `Create a three to four words long, creative and catchy name for a radio station that captures the emotion of "${emotion}".`
+
+  const response = await openAi.createChatCompletion({
+    model: 'gpt-3.5-turbo',
+    messages: [
+      {
+        role: 'system',
+        content: `I'm helping to generate a creative name for a radio station. The theme of the station revolves around the emotion "${emotion}". The name should be two to three words long and catchy.`,
+      },
+      {
+        role: 'user',
+        content: `Given these constraints, what should be the name?`,
+      },
+    ],
+  })
+
+  let fullResponse = response.data.choices[0].message.content.trim()
+  console.log('Full Response', fullResponse)
+  return fullResponse
+}
+
 async function askGptSongs(emotion) {
   const songsFromDb = await getRandomSongsFromMoodTag(emotion, 10)
   return { songs: songsFromDb }
@@ -41,4 +65,5 @@ async function askGptSongs(emotion) {
 module.exports = {
   askGptEmotion,
   askGptSongs,
+  askGptStationName,
 }
