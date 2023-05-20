@@ -1,9 +1,10 @@
 const openaiService = require('./openai.service.js')
 
 async function getEmotion(req, res) {
-  console.log('hi')
   try {
+    console.log('Request received for getEmotion')
     const text = req.query.text
+    console.log('Text from query:', text)
     let tags = [
       'Party',
       'At Home',
@@ -24,12 +25,12 @@ async function getEmotion(req, res) {
       'Hip-Hop',
     ]
     const emotion = await openaiService.askGptEmotion(text, tags)
-    console.log('Emotion', emotion)
+    console.log('Sending response:', { emotion: emotion })
     res.json({ emotion: emotion })
   } catch (err) {
     console.error('Failed to detect emotion', err)
-    res.status(500).send({ err: 'Failed to detect emotion' })
-  }
+    res.status(500).send({ err: `Failed to detect emotion: ${err.message}` })
+  }  
 }
 
 async function generateSongs(req, res) {

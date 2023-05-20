@@ -24,7 +24,6 @@ async function getRandomSongsFromMoodTag(mood, songLimit) {
   try {
     const collection = await getCollection('station')
     const playlists = await collection.find({}).toArray() // Fetch all playlists
-    console.log('All playlists:', playlists) // Log all playlists
 
     const matchedPlaylists = await collection.find({ tags: mood }).toArray() // Fetch playlists that match the mood
     console.log(`Playlists matching mood "${mood}":`, matchedPlaylists) // Log matched playlists

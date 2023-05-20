@@ -3,24 +3,13 @@ require('dotenv').config()
 const { getRandomSongsFromMoodTag } = require('../../services/db.service')
 const openAi = new OpenAIApi(
   new Configuration({
-    apiKey: process.env.CHAT_GPT_AI,
+    apiKey: "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",
   })
 )
 
-// async function askGptEmotion(text) {
-//   const response = await openAi.completions.create({
-//     engine: 'text-davinci-004',
-//     prompt: `Text: ${text}\n\nEmotion:`,
-//     temperature: 0.5,
-//     max_tokens: 60,
-//   })
-
-//   let detectedEmotion = response.choices[0].text.trim()
-//   console.log('detectedEmotion', detectedEmotion)
-//   return detectedEmotion
-// }
 async function askGptEmotion(text, tags) {
-  console.log('text in service openai', text)
+  console.log('Text in askGptEmotion:', text)
+  console.log('Tags in askGptEmotion:', tags)
   let tagList = tags.join(', ')
   const completion = await openAi.createChatCompletion({
     model: 'gpt-3.5-turbo',
@@ -40,7 +29,9 @@ async function askGptEmotion(text, tags) {
   console.log('Full Response', fullResponse)
 
   let chosenTag = fullResponse.match(/"([^"]+)"/)[1]
-  console.log('chosenTag', chosenTag)
+  
+  console.log('Full Response:', fullResponse)
+  console.log('Chosen Tag:', chosenTag)
 
   return chosenTag
 }
