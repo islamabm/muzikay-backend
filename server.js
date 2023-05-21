@@ -19,8 +19,8 @@ if (process.env.NODE_ENV === 'production') {
   }
   app.use(cors(corsOptions))
 }
-const openaiRoutes = require('./api/openai/openai.routes')
 
+const openaiRoutes = require('./api/openai/openai.routes')
 const authRoutes = require('./api/auth/auth.routes')
 const userRoutes = require('./api/user/user.routes')
 const reviewRoutes = require('./api/review/review.routes')

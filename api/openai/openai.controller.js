@@ -1,7 +1,6 @@
 const openaiService = require('./openai.service.js')
 
 async function getEmotion(req, res) {
-  console.log('hi')
   try {
     const text = req.query.text
     let tags = [
@@ -24,7 +23,6 @@ async function getEmotion(req, res) {
       'Hip-Hop',
     ]
     const emotion = await openaiService.askGptEmotion(text, tags)
-    console.log('Emotion', emotion)
     res.json({ emotion: emotion })
   } catch (err) {
     console.error('Failed to detect emotion', err)

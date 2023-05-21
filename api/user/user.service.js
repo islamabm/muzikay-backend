@@ -10,6 +10,14 @@ module.exports = {
   remove,
   update,
   add,
+  getUserDetails,
+}
+async function getUserDetails(userId) {
+  const user = await dbService
+    .getCollection('user')
+    .findOne({ _id: new ObjectId(userId) })
+  console.log('user in service', user)
+  return user
 }
 
 async function query(filterBy = {}) {

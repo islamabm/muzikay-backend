@@ -11,6 +11,16 @@ async function getUser(req, res) {
     res.status(500).send({ err: 'Failed to get user' })
   }
 }
+async function getUserDetails(req, res) {
+  try {
+    const user = await userService.getUserDetails(req.params.id)
+    console.log('user', user)
+    res.send(user)
+  } catch (err) {
+    logger.error('Failed to get user details', err)
+    res.status(500).send({ err: 'Failed to get user details' })
+  }
+}
 
 async function getUsers(req, res) {
   try {
@@ -54,4 +64,5 @@ module.exports = {
   getUsers,
   deleteUser,
   updateUser,
+  getUserDetails,
 }
