@@ -8,7 +8,6 @@ const openAi = new OpenAIApi(
 )
 
 async function askGptEmotion(text, tags) {
-  console.log('text in service openai', text)
   let tagList = tags.join(', ')
   const completion = await openAi.createChatCompletion({
     model: 'gpt-3.5-turbo',
@@ -34,15 +33,12 @@ async function askGptEmotion(text, tags) {
 }
 
 async function askGptStationName(emotion) {
-  console.log('hi')
-  const prompt = `Create a three to four words long, creative and catchy name for a radio station that captures the emotion of "${emotion}".`
-
   const response = await openAi.createChatCompletion({
     model: 'gpt-3.5-turbo',
     messages: [
       {
         role: 'system',
-        content: `I'm helping to generate a creative name for a radio station. The theme of the station revolves around the emotion "${emotion}". The name should be two to three words long and catchy.`,
+        content: `I'm helping to generate a creative name for a radio station. The theme of the station revolves around the emotion "${emotion}". The name should be three to four words long and catchy.`,
       },
       {
         role: 'user',

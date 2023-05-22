@@ -25,7 +25,6 @@ async function getEmotion(req, res) {
       'Hip-Hop',
     ]
     const emotion = await openaiService.askGptEmotion(text, tags)
-    console.log('Sending response:', { emotion: emotion })
     res.json({ emotion: emotion })
   } catch (err) {
     console.error('Failed to detect emotion', err)

@@ -74,6 +74,7 @@ async function update(station) {
 }
 
 async function addStationSong(stationId, song) {
+  console.log('song in the service back', song)
   try {
     const collection = await dbService.getCollection('station')
     await collection.updateOne(
@@ -88,20 +89,19 @@ async function addStationSong(stationId, song) {
 }
 
 //Step 6
-async function removeStationSong(stationId, songId) {
+async function removeStationSong(stationId, songArtist, songTitle) {
   try {
     const collection = await dbService.getCollection('station')
     await collection.updateOne(
       { _id: new ObjectId(stationId) },
-      { $pull: { songs: { id: songId } } }
+      { $pull: { songs: { artist: songArtist, title: songTitle } } }
     )
-    return songId
+    return { artist: songArtist, title: songTitle }
   } catch (err) {
     logger.error(`cannot add station msg ${stationId}`, err)
     throw err
   }
 }
-
 module.exports = {
   remove,
   query,
