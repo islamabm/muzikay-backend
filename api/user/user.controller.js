@@ -1,5 +1,5 @@
 const userService = require('./user.service')
-const socketService = require('../../services/socket.service')
+
 const logger = require('../../services/logger.service')
 
 async function getUser(req, res) {
@@ -14,7 +14,7 @@ async function getUser(req, res) {
 async function getUserDetails(req, res) {
   try {
     const user = await userService.getUserDetails(req.params.id)
-    console.log('user', user)
+
     res.send(user)
   } catch (err) {
     logger.error('Failed to get user details', err)
@@ -49,9 +49,7 @@ async function deleteUser(req, res) {
 async function updateUser(req, res) {
   try {
     const user = req.body
-    console.log('user in the back controller', user)
     const savedUser = await userService.update(user)
-    console.log('savedUser in the back controller', savedUser)
     res.send(savedUser)
   } catch (err) {
     logger.error('Failed to update user', err)

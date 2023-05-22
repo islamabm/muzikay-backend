@@ -24,11 +24,7 @@ async function askGptEmotion(text, tags) {
   })
 
   let fullResponse = completion.data.choices[0].message.content.trim()
-  console.log('Full Response', fullResponse)
-
   let chosenTag = fullResponse.match(/"([^"]+)"/)[1]
-  console.log('chosenTag', chosenTag)
-
   return chosenTag
 }
 
@@ -48,7 +44,6 @@ async function askGptStationName(emotion) {
   })
 
   let fullResponse = response.data.choices[0].message.content.trim()
-  console.log('Full Response', fullResponse)
   return fullResponse
 }
 
