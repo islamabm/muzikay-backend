@@ -44,7 +44,19 @@ async function generateSongs(req, res) {
   }
 }
 
+async function generateStationName(req, res) {
+  try {
+    const emotion = req.body.emotion
+    const name = await openaiService.askGptStationName(emotion)
+    res.json({ name: name })
+  } catch (err) {
+    console.error('Failed to generate station name', err)
+    res.status(500).send({ err: 'Failed to generate station name' })
+  }
+}
+
 module.exports = {
   getEmotion,
   generateSongs,
+  generateStationName,
 }
