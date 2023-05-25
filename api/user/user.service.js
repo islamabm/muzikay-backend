@@ -16,7 +16,6 @@ async function getUserDetails(userId) {
   const user = await dbService
     .getCollection('user')
     .findOne({ _id: new ObjectId(userId) })
-  console.log('user in service', user)
   return user
 }
 
@@ -88,7 +87,7 @@ async function update(user) {
       fullname: user.fullname,
       LikedSongs: user.LikedSongs,
     }
-    console.log('userToSave', userToSave)
+
     const collection = await dbService.getCollection('user')
     await collection.updateOne({ _id: userToSave._id }, { $set: userToSave })
     return userToSave

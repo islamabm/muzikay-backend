@@ -16,10 +16,6 @@ async function getStations(req, res) {
 async function getStationById(req, res) {
   try {
     const stationId = req.params.id
-    console.log(
-      'get station by id i n the station controller in the backl',
-      stationId
-    )
     const station = await stationService.getById(stationId)
     res.json(station)
   } catch (err) {
@@ -30,7 +26,6 @@ async function getStationById(req, res) {
 
 async function addStation(req, res) {
   const { loggedinUser } = req
-  console.log('loggedinUser', loggedinUser)
   try {
     const station = req.body
     // station.owner = loggedinUser
@@ -56,7 +51,6 @@ async function updateStation(req, res) {
 async function removeStation(req, res) {
   try {
     const stationId = req.params.id
-    console.log('stationid', stationId)
     const removedId = await stationService.remove(stationId)
     res.send(removedId)
   } catch (err) {
@@ -70,9 +64,7 @@ async function addStationSong(req, res) {
   try {
     const stationId = req.params.id
     const song = req.body.song
-    console.log('song before go to service back', song)
     const savedSong = await stationService.addStationSong(stationId, song)
-    console.log('savedSong after go to service back', savedSong)
     res.json(savedSong)
   } catch (err) {
     logger.error('Failed to update station', err)
@@ -87,14 +79,11 @@ async function removeStationSong(req, res) {
     const stationId = req.params.id
     const songArtist = req.params.songArtist
     const songTitle = req.params.songTitle
-    console.log('songArtist', songArtist)
-    console.log('songTitle', songTitle)
     const removedSongDetails = await stationService.removeStationSong(
       stationId,
       songArtist,
       songTitle
     )
-    console.log('remove song from the back station service', removedSongDetails)
     res.send(removedSongDetails)
   } catch (err) {
     logger.error('Failed to remove station msg', err)

@@ -3,7 +3,7 @@ require('dotenv').config()
 const { getRandomSongsFromMoodTag } = require('../../services/db.service')
 const openAi = new OpenAIApi(
   new Configuration({
-    apiKey: "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",
+    apiKey: process.env.CHAT_GPT_AI,
   })
 )
 
@@ -24,11 +24,7 @@ async function askGptEmotion(text, tags) {
   })
 
   let fullResponse = completion.data.choices[0].message.content.trim()
-  console.log('Full Response', fullResponse)
-
   let chosenTag = fullResponse.match(/"([^"]+)"/)[1]
-  console.log('chosenTag', chosenTag)
-
   return chosenTag
 }
 
@@ -51,7 +47,6 @@ async function askGptStationName(emotion) {
   })
 
   let fullResponse = response.data.choices[0].message.content.trim()
-  console.log('Full Response', fullResponse)
   return fullResponse
 }
 

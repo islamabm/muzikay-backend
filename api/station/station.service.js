@@ -1,6 +1,5 @@
 const dbService = require('../../services/db.service')
 const logger = require('../../services/logger.service')
-const utilService = require('../../services/util.service')
 const ObjectId = require('mongodb').ObjectId
 
 async function query() {
@@ -18,11 +17,10 @@ async function query() {
 
 async function getById(stationId) {
   try {
-    console.log(stationId)
     const collection = await dbService.getCollection('station')
-    console.log('before')
+
     const station = collection.findOne({ _id: new ObjectId(stationId) })
-    console.log('station in service', station)
+
     return station
   } catch (err) {
     logger.error(`while finding station ${stationId}`, err)
@@ -32,11 +30,8 @@ async function getById(stationId) {
 
 async function remove(stationId) {
   try {
-    console.log('remove station in station service', stationId)
     const collection = await dbService.getCollection('station')
-    console.log(collection)
     await collection.deleteOne({ _id: new ObjectId(stationId) })
-    console.log(stationId)
     return stationId
   } catch (err) {
     logger.error(`cannot remove station ${stationId}`, err)
@@ -74,7 +69,6 @@ async function update(station) {
 }
 
 async function addStationSong(stationId, song) {
-  console.log('song in the service back', song)
   try {
     const collection = await dbService.getCollection('station')
     await collection.updateOne(
