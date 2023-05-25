@@ -25,6 +25,7 @@ const authRoutes = require('./api/auth/auth.routes')
 const userRoutes = require('./api/user/user.routes')
 const reviewRoutes = require('./api/review/review.routes')
 const stationRoutes = require('./api/station/station.routes')
+app.use('/api/lyrics', require('./api/lyrics/lyrics.routes'))
 const { setupSocketAPI } = require('./services/socket.service')
 
 // routes
