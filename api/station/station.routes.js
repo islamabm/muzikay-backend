@@ -22,14 +22,13 @@ router.get('/', log, getStations)
 router.get('/:id', getStationById)
 router.post('/', addStation)
 router.put('/:id', updateStation)
+router.delete('/:id', removeStation)
 router.delete('/:id/song/:songArtist/:songTitle', removeStationSong)
 // router.post('/', requireAuth, addStation)
 // router.put('/:id', requireAuth, updateStation)
-// router.delete('/:id', requireAuth, removeStation)
 // router.delete('/:id', requireAuth, requireAdmin, removeStation)
 
 router.post('/:id/song', addStationSong)
 //Step 4
-router.delete('/:id/song/:songId', removeStationSong)
 
 module.exports = router
