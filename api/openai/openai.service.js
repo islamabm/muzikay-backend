@@ -29,7 +29,6 @@ async function askGptEmotion(text, tags) {
 }
 
 async function askGptStationName(emotion) {
-  console.log('hi')
   const prompt = `Create a three to four words long, creative and catchy name for a radio station that captures the emotion of "${emotion}".`
 
   const response = await openAi.createChatCompletion({
