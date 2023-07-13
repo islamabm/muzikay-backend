@@ -24,7 +24,6 @@ async function getTestStations(req, res) {
   }
 }
 
-
 async function getStationById(req, res) {
   try {
     const stationId = req.params.id

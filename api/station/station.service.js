@@ -18,7 +18,9 @@ async function queryTest() {
   try {
     const collection = await dbService.getCollection('station')
 
-    var stations = await collection.find({ tags: { $in: ['Mood', 'Rock', 'Indie','Decades'] } }).toArray()
+    var stations = await collection
+      .find({ tags: { $in: ['Mood', 'Rock', 'Indie', 'Decades'] } })
+      .toArray()
 
     return stations
   } catch (err) {
@@ -26,8 +28,6 @@ async function queryTest() {
     throw err
   }
 }
-
-
 
 async function getById(stationId) {
   try {
