@@ -13,6 +13,18 @@ async function getStations(req, res) {
   }
 }
 
+async function getTestStations(req, res) {
+  try {
+    logger.debug('Getting Test Stations')
+    const stations = await stationService.queryTest()
+    res.json(stations)
+  } catch (err) {
+    logger.error('Failed to get test stations', err)
+    res.status(500).send({ err: 'Failed to get test stations' })
+  }
+}
+
+
 async function getStationById(req, res) {
   try {
     const stationId = req.params.id
@@ -93,6 +105,7 @@ async function removeStationSong(req, res) {
 
 module.exports = {
   getStations,
+  getTestStations,
   getStationById,
   addStation,
   updateStation,

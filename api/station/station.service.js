@@ -14,6 +14,20 @@ async function query() {
     throw err
   }
 }
+async function queryTest() {
+  try {
+    const collection = await dbService.getCollection('station')
+
+    var stations = await collection.find({ tags: { $in: ['Mood', 'Rock', 'Indie','Decades'] } }).toArray()
+
+    return stations
+  } catch (err) {
+    logger.error('cannot find stations', err)
+    throw err
+  }
+}
+
+
 
 async function getById(stationId) {
   try {
@@ -99,6 +113,7 @@ async function removeStationSong(stationId, songArtist, songTitle) {
 module.exports = {
   remove,
   query,
+  queryTest,
   getById,
   add,
   update,

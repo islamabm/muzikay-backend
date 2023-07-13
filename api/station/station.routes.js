@@ -6,6 +6,7 @@ const {
 const { log } = require('../../middlewares/logger.middleware')
 const {
   getStations,
+  getTestStations,
   getStationById,
   addStation,
   updateStation,
@@ -19,6 +20,7 @@ const router = express.Router()
 // router.use(requireAuth)
 
 router.get('/', log, getStations)
+router.get('/test', getTestStations)
 router.get('/:id', getStationById)
 router.post('/', addStation)
 router.put('/:id', updateStation)
